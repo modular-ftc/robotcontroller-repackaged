@@ -8,8 +8,8 @@ android {
         targetSdkVersion 19
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        versionCode 2
-        versionName "$ftc_version.1-lite"
+        versionCode 3
+        versionName "$ftc_version.2-lite"
 
         ndk {
             abiFilters "armeabi-v7a"

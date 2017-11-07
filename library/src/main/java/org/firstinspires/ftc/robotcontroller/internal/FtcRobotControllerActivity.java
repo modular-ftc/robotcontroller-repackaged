@@ -321,7 +321,7 @@ public class FtcRobotControllerActivity extends Activity
   protected void onPause() {
     super.onPause();
     RobotLog.vv(TAG, "onPause()");
-    if (programmingModeController.isActive()) {
+    if (programmingModeController != null && programmingModeController.isActive()) {
       programmingModeController.stopProgrammingMode();
     }
   }
