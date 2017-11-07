@@ -9,7 +9,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         versionCode 2
-        versionName "$ftc_version.1"
+        versionName "$ftc_version.1-lite"
 
         ndk {
             abiFilters "armeabi-v7a"
@@ -25,8 +25,8 @@ project.archivesBaseName = 'robotcontroller-repackaged'
 
 dependencies {
     implementation "org.first.ftc:inspection:$ftc_version"
-    implementation "org.first.ftc:blocks:$ftc_version"
-    implementation "com.github.modular-ftc:robotcore-repackaged:$ftc_version.5"
+    //implementation "org.first.ftc:blocks:$ftc_version"
+    implementation "com.github.modular-ftc:robotcore-repackaged:$ftc_version.5-lite"
     implementation "org.first.ftc:hardware:$ftc_version"
     implementation "org.first.ftc:ftc-common:$ftc_version"
     implementation "org.first.ftc:analytics:$ftc_version"
