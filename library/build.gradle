@@ -24,11 +24,11 @@ version = android.defaultConfig.versionName
 project.archivesBaseName = 'robotcontroller-repackaged'
 
 dependencies {
-    implementation "org.first.ftc:inspection:$ftc_version"
-    //implementation "org.first.ftc:blocks:$ftc_version"
     implementation "com.github.modular-ftc:robotcore-repackaged:$ftc_version.5-lite"
+    implementation "com.github.modular-ftc:ftc-common-repackaged:$ftc_version.0-lite"
+
+    implementation "org.first.ftc:inspection:$ftc_version"
     implementation "org.first.ftc:hardware:$ftc_version"
-    implementation "org.first.ftc:ftc-common:$ftc_version"
     implementation "org.first.ftc:analytics:$ftc_version"
     implementation "org.first.ftc:wireless-p2p:$ftc_version"
 
