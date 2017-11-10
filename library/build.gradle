@@ -8,8 +8,8 @@ android {
         targetSdkVersion 19
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        versionCode 3
-        versionName "$ftc_version.2-lite"
+        versionCode 4
+        versionName "$ftc_version.3-lite"
 
         ndk {
             abiFilters "armeabi-v7a"
@@ -31,8 +31,6 @@ dependencies {
     implementation "org.first.ftc:hardware:$ftc_version"
     implementation "org.first.ftc:analytics:$ftc_version"
     implementation "org.first.ftc:wireless-p2p:$ftc_version"
-
-    implementation "com.github.modular-ftc:vuforia-repackaged:$ftc_version.0"
 }
 
 //For JitPack
