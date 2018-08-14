@@ -8,8 +8,8 @@ android {
         targetSdkVersion 19
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        versionCode 4
-        versionName "$ftc_version.3"
+        versionCode 27
+        versionName "$ftc_version.0"
 
         ndk {
             abiFilters "armeabi-v7a"
@@ -26,9 +26,9 @@ project.archivesBaseName = 'robotcontroller-repackaged'
 dependencies {
     implementation "org.first.ftc:inspection:$ftc_version"
     implementation "org.first.ftc:blocks:$ftc_version"
-    implementation "com.github.modular-ftc:robotcore-repackaged:$ftc_version.5"
+    implementation "com.github.modular-ftc:robotcore-repackaged:$ftc_version.0"
     implementation "org.first.ftc:hardware:$ftc_version"
-    implementation "org.first.ftc:ftc-common:$ftc_version"
+    implementation "com.github.modular-ftc:ftc-common-repackaged:$ftc_version.0"
     implementation "org.first.ftc:analytics:$ftc_version"
     implementation "org.first.ftc:wireless-p2p:$ftc_version"
 }
