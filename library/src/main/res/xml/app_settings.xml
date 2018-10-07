@@ -54,7 +54,6 @@ See https://developer.android.com/guide/topics/ui/settings.html
         />
 
     <org.firstinspires.ftc.robotcore.internal.ui.ColorListPreference
-        android:defaultValue="@string/tokenThemeGreen"
         android:title="@string/prefedit_app_theme_rc"
         android:summary="@string/prefedit_app_theme_summary_rc"
         android:key="@string/pref_app_theme"
@@ -65,7 +64,7 @@ See https://developer.android.com/guide/topics/ui/settings.html
 
     <SwitchPreference
         android:title="@string/prefedit_sound_on_off"
-        android:summary="@string/prefedit_sound_on_off_summary"
+        android:summary="@string/prefedit_sound_on_off_summary_rc"
         android:key="@string/pref_sound_on_off"
         android:defaultValue="true"
         />
