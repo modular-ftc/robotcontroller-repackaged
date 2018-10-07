@@ -60,11 +60,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.google.blocks.ftcrobotcontroller.BlocksActivity;
-import com.google.blocks.ftcrobotcontroller.ProgrammingModeActivity;
-import com.google.blocks.ftcrobotcontroller.ProgrammingModeControllerImpl;
-import com.google.blocks.ftcrobotcontroller.ProgrammingWebHandlers;
-import com.google.blocks.ftcrobotcontroller.runtime.BlocksOpMode;
 import com.qualcomm.ftccommon.ClassManagerFactory;
 import com.qualcomm.ftccommon.FtcAboutActivity;
 import com.qualcomm.ftccommon.FtcEventLoop;
@@ -98,7 +93,6 @@ import com.qualcomm.robotcore.wifi.NetworkType;
 
 import org.firstinspires.ftc.ftccommon.external.SoundPlayingRobotMonitor;
 import org.firstinspires.ftc.ftccommon.internal.FtcRobotControllerWatchdogService;
-import org.firstinspires.ftc.ftccommon.internal.ProgramAndManageActivity;
 import org.firstinspires.ftc.robotcore.external.navigation.MotionDetection;
 import org.firstinspires.ftc.robotcore.internal.hardware.DragonboardLynxDragonboardIsPresentPin;
 import org.firstinspires.ftc.robotcore.internal.network.DeviceNameManager;
@@ -115,8 +109,6 @@ import org.firstinspires.ftc.robotcore.internal.system.ServiceController;
 import org.firstinspires.ftc.robotcore.internal.ui.LocalByRefIntentExtraHolder;
 import org.firstinspires.ftc.robotcore.internal.ui.ThemedActivity;
 import org.firstinspires.ftc.robotcore.internal.ui.UILocation;
-import org.firstinspires.ftc.robotcore.internal.webserver.RobotControllerWebInfo;
-import org.firstinspires.ftc.robotcore.internal.webserver.WebServer;
 import org.firstinspires.inspection.RcInspectionActivity;
 
 import java.util.Queue;
@@ -134,7 +126,6 @@ public class FtcRobotControllerActivity extends Activity
   protected WifiManager.WifiLock wifiLock;
   protected RobotConfigFileManager cfgFileMgr;
 
-  protected ProgrammingWebHandlers programmingWebHandlers;
   protected ProgrammingModeController programmingModeController;
 
   protected UpdateUI.Callback callback;
@@ -286,8 +277,6 @@ public class FtcRobotControllerActivity extends Activity
       }
     });
 
-    BlocksOpMode.setActivityAndWebView(this, (WebView) findViewById(R.id.webViewBlocksRuntime));
-
     ClassManagerFactory.registerFilters();
     ClassManagerFactory.processAllClasses();
     cfgFileMgr = new RobotConfigFileManager(this);
@@ -309,10 +298,6 @@ public class FtcRobotControllerActivity extends Activity
     immersion = new ImmersiveMode(getWindow().getDecorView());
     dimmer = new Dimmer(this);
     dimmer.longBright();
-
-    programmingWebHandlers = new ProgrammingWebHandlers();
-    programmingModeController = new ProgrammingModeControllerImpl(
-            this, (TextView) findViewById(R.id.textRemoteProgrammingMode), programmingWebHandlers);
 
     updateUI = createUpdateUI();
     callback = createUICallback(updateUI);
@@ -384,7 +369,7 @@ public class FtcRobotControllerActivity extends Activity
   protected void onPause() {
     super.onPause();
     RobotLog.vv(TAG, "onPause()");
-    if (programmingModeController.isActive()) {
+    if (programmingModeController != null && programmingModeController.isActive()) {
       programmingModeController.stopProgrammingMode();
     }
   }
@@ -435,7 +420,6 @@ public class FtcRobotControllerActivity extends Activity
     RobotLog.logBuildConfig(com.qualcomm.robotcore.BuildConfig.class);
     RobotLog.logBuildConfig(com.qualcomm.hardware.BuildConfig.class);
     RobotLog.logBuildConfig(com.qualcomm.ftccommon.BuildConfig.class);
-    RobotLog.logBuildConfig(com.google.blocks.BuildConfig.class);
     RobotLog.logBuildConfig(org.firstinspires.inspection.BuildConfig.class);
   }
 
@@ -493,32 +477,9 @@ public class FtcRobotControllerActivity extends Activity
   public boolean onOptionsItemSelected(MenuItem item) {
     int id = item.getItemId();
 
-    if (id == R.id.action_programming_mode) {
-      if (cfgFileMgr.getActiveConfig().isNoConfig()) {
-        // Tell the user they must configure the robot before starting programming mode.
-        // TODO: as we are no longer truly 'modal' this warning should be adapted
-        AppUtil.getInstance().showToast(UILocation.BOTH, context, context.getString(R.string.toastConfigureRobotBeforeProgrammingMode));
-      } else {
-        Intent programmingModeIntent = new Intent(AppUtil.getDefContext(), ProgrammingModeActivity.class);
-        programmingModeIntent.putExtra(
-            LaunchActivityConstantsList.PROGRAMMING_MODE_ACTIVITY_PROGRAMMING_WEB_HANDLERS,
-            new LocalByRefIntentExtraHolder(programmingWebHandlers));
-        startActivity(programmingModeIntent);
-      }
-      return true;
-    } else if (id == R.id.action_program_and_manage) {
-      Intent programmingModeIntent = new Intent(AppUtil.getDefContext(), ProgramAndManageActivity.class);
-      RobotControllerWebInfo webInfo = programmingWebHandlers.getWebServer().getConnectionInformation();
-      programmingModeIntent.putExtra(LaunchActivityConstantsList.RC_WEB_INFO, webInfo.toJson());
-      startActivity(programmingModeIntent);
-    } else if (id == R.id.action_inspection_mode) {
+    if (id == R.id.action_inspection_mode) {
       Intent inspectionModeIntent = new Intent(AppUtil.getDefContext(), RcInspectionActivity.class);
       startActivity(inspectionModeIntent);
-      return true;
-    }
-    else if (id == R.id.action_blocks) {
-      Intent blocksIntent = new Intent(AppUtil.getDefContext(), BlocksActivity.class);
-      startActivity(blocksIntent);
       return true;
     }
     else if (id == R.id.action_restart_robot) {
@@ -578,18 +539,6 @@ public class FtcRobotControllerActivity extends Activity
     updateUI.setControllerService(controllerService);
 
     updateUIAndRequestRobotSetup();
-    programmingWebHandlers.setState(new FtcRobotControllerServiceState() {
-      @NonNull
-      @Override
-      public WebServer getWebServer() {
-        return service.getWebServer();
-      }
-
-      @Override
-      public EventLoopManager getEventLoopManager() {
-        return service.getRobot().eventLoopManager;
-      }
-    });
   }
 
   private void updateUIAndRequestRobotSetup() {
