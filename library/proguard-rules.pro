@@ -35,6 +35,8 @@
 
 -dontwarn com.sun.tools.**
 -dontwarn com.google.common.**
+-dontwarn com.qualcomm.analytics.**
+-dontwarn com.qualcomm.wirelessp2p.**
 
 ##---------------Begin: proguard configuration for Gson  ----------
 # Gson uses generic type information stored in a class file when working with fields. Proguard
