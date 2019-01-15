@@ -8,14 +8,18 @@ android {
         targetSdkVersion 19
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        versionCode 29
-        versionName "$ftc_version.0-lite"
+        versionCode 30
+        versionName "$ftc_version.1-lite"
 
         ndk {
             abiFilters "armeabi-v7a"
         }
 
         consumerProguardFiles 'proguard-rules.pro'
+    }
+
+    aaptOptions {
+        noCompress "tflite"
     }
 }
 
