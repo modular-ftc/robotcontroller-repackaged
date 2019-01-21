@@ -2,9 +2,11 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         minSdkVersion 19
+        // Required to bypass runtime Camera permissions
+        //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 19
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -23,18 +25,24 @@ android {
     }
 }
 
-group = 'com.github.Pattonville-Robotics'
+group = 'com.github.modular-ftc'
 version = android.defaultConfig.versionName
 project.archivesBaseName = 'robotcontroller-repackaged'
 
 dependencies {
-    implementation "com.github.modular-ftc:robotcore-repackaged:$ftc_version.0-lite"
-    implementation "com.github.modular-ftc:ftc-common-repackaged:$ftc_version.0-lite"
-
+    // Original dependencies
     implementation "org.first.ftc:inspection:$ftc_version"
     implementation "org.first.ftc:hardware:$ftc_version"
     implementation "org.first.ftc:analytics:$ftc_version"
     implementation "org.first.ftc:wireless-p2p:$ftc_version"
+    implementation "org.first.ftc:vuforia-incomplete:$ftc_version"
+
+    // Repackaged dependencies
+    implementation "com.github.modular-ftc:robotcore-repackaged:$ftc_version.0-lite"
+    implementation "com.github.modular-ftc:ftc-common-repackaged:$ftc_version.0-lite"
+
+    // Android dependencies
+    implementation 'com.android.support:support-annotations:28.0.0'
 }
 
 //For JitPack
